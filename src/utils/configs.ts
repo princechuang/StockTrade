@@ -1,0 +1,11 @@
+export const imgHost = import.meta.env.VITE_APP_IMG_HOST;
+export const appId = import.meta.env.VITE_APP_APPID;
+export const agentId = import.meta.env.VITE_APP_AGENTID;
+export const portalHost = import.meta.env.VITE_APP_PORTAL_HOST;
+export const aliyunAccessKeyId = import.meta.env.VITE_APP_ALIYUN_ACCESSKEYID;
+export const aliyunAccessKeySecret = import.meta.env.VITE_APP_ALIYUN_ACCESSKEYSECRET;
+export const aliyunOssRegion = import.meta.env.VITE_APP_ALIYUN_OSSREGION;
+export const aliyunOssEndpoint = import.meta.env.VITE_APP_ALIYUN_OSSENDPOINT;
+export const aliyunOssBucket = import.meta.env.VITE_APP_ALIYUN_OSSBUCKET;
+export const isPro = import.meta.env.PROD || import.meta.env.VITE_APP_ENV_NODE === 'pro';
+export const apiHost = "/api";
