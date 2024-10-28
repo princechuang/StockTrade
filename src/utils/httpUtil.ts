@@ -3,7 +3,7 @@ import axios, {
   AxiosError,
   AxiosRequestConfig,
   AxiosResponse,
-} from "axios";
+} from  "axios";
 import { apiHost } from "@/utils/configs";
 import { showToast } from "vant";
 

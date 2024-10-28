@@ -6,9 +6,10 @@ import * as path from "path";
 import pptv from "postcss-px-to-viewport-8-plugin";
 import { createHtmlPlugin } from "vite-plugin-html";
 import viteCompression from "vite-plugin-compression";
-import viteImagemin from "vite-plugin-imagemin";
+//import viteImagemin from "vite-plugin-imagemin";
 
-const getViteEnv = (mode, target) => {
+//const path=require('path');
+const getViteEnv = (mode:any, target:any) => {
   return loadEnv(mode, process.cwd())[target];
 };
 // https://vitejs.dev/config/
@@ -27,7 +28,7 @@ export default ({ mode }: ConfigEnv) =>
         },
       }),
       viteCompression(),
-      viteImagemin(),
+      //viteImagemin(),
     ],
     css: {
       postcss: {
@@ -44,7 +45,7 @@ export default ({ mode }: ConfigEnv) =>
       alias: [
         {
           find: "@",
-          replacement: path.resolve("./src"),
+          replacement: path.resolve("src"),
         },
       ],
     },
