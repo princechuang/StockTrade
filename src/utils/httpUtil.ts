@@ -3,9 +3,11 @@ import axios, {
   AxiosError,
   AxiosRequestConfig,
   AxiosResponse,
+  InternalAxiosRequestConfig,
 } from  "axios";
 import { apiHost } from "@/utils/configs";
 import { showToast } from "vant";
+//const https=require("https");
 
 // 数据返回的接口
 // 定义请求响应参数，不含data
@@ -41,14 +43,14 @@ class RequestHttp {
     // 实例化axios
     this.service = axios.create(config);
     this.service.interceptors.request.use(
-      (config: AxiosRequestConfig) => {
+      (config: any) => {
         const token = sessionStorage.getItem("token") || "";
         const userId = sessionStorage.getItem("userId") || "";
         return {
           ...config,
           headers: {
             Authorization: `Bearer ${token}`, // 请求头中携带token信息
-            userId: userId,
+            userId: userId
           },
         };
       },

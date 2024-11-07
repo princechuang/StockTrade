@@ -7,6 +7,7 @@ import {
 import { showToast } from "vant";
 import { getWxUserInfo } from "@/api/myApi";
 import { isPro, portalHost, appId, agentId } from "@/utils/configs";
+import { title } from "process";
 
 const App = () => import("@/App.vue");
 
@@ -21,6 +22,18 @@ const routes: Array<RouteRecordRaw> = [
     meta: { title: "首页" },
     component: () => import("@/views/index.vue"),
   },
+  {
+    path: "/jinNangList",
+    name: "JinNangList",
+    meta: { title: "锦囊列表" },
+    component: () => import("@/views/allJinNang.vue"),
+  },
+  {
+    path:'/openJinNang',
+    name:"OpenJinNang",
+    meta:{title:"锦囊详情"},
+    component:()=>import("@/views/stock_list.vue")
+  }
 ];
 const router = createRouter({
   history: createWebHistory(),
@@ -32,6 +45,7 @@ const setTitle = function (to: RouteLocationNormalized, title: string) {
 };
 
 router.beforeEach((to, from, next) => {
+  
   if (isPro) {
     const hostName = portalHost;
     const fullPath = to.fullPath;

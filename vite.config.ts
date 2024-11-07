@@ -50,14 +50,12 @@ export default ({ mode }: ConfigEnv) =>
       ],
     },
     server: {
-      host: "0.0.0.0",
-      port: 6045,
       proxy: {
-        "/api": {
-          target: "http://127.0.0.1:6044",
+        "/hpapi": {
+          target: "https://alextian.tpddns.cn:4431",
           secure: false,
           changeOrigin: true,
-          rewrite: (path) => path.replace(/^\/api/, ""),
+          //rewrite:(path)=>path.replace(/^\/hpapi/,'')
         },
       },
     },
