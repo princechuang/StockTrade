@@ -7,6 +7,7 @@ import {
 import { showToast } from "vant";
 import { getWxUserInfo } from "@/api/myApi";
 import { isPro, portalHost, appId, agentId } from "@/utils/configs";
+// import { jinNangList } from "@/views/allJinNang.vue";
 import { title } from "process";
 
 const App = () => import("@/App.vue");
@@ -20,19 +21,20 @@ const routes: Array<RouteRecordRaw> = [
     path: "/index",
     name: "index",
     meta: { title: "首页" },
-    component: () => import("@/views/index.vue"),
+    component: () => require("@/views/index.vue"),
   },
   {
     path: "/jinNangList",
     name: "JinNangList",
     meta: { title: "锦囊列表" },
-    component: () => import("@/views/allJinNang.vue"),
+    component: () => require("@/views/allJinNang.vue"),
+    // component: () =>jinNangList,
   },
   {
     path:'/openJinNang',
     name:"OpenJinNang",
     meta:{title:"锦囊详情"},
-    component:()=>import("@/views/stock_list.vue")
+    component:()=>require("@/views/stock_list.vue")
   }
 ];
 const router = createRouter({
