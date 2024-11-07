@@ -20,8 +20,8 @@
     "noUnusedParameters": false,
     "noFallthroughCasesInSwitch": true,
     "noUncheckedSideEffectImports": true,
-    // "noImplicitAny":false,
-    // "allowJs":true,
+    "noImplicitAny":false,
+     "allowJs":true,
     "baseUrl": ".",
     "paths": {
       "@/*": [

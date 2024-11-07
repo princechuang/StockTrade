@@ -1,5 +1,8 @@
+<script>
+import JinNang from '@/components/JinNang.vue';
+</script>
 <template>
     <div>
-        这里是企业微信首页
+        <jin-nang></jin-nang>
     </div>
 </template>

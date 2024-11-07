@@ -1,75 +1,12 @@
-<script>
-import { defineComponent } from 'vue';
-import { Row,Col,Button,List,showToast} from 'vant';
-import axios from 'axios';
-import httpUtil from '@/utils/httpUtil';
-import moment from 'moment';
-import apiService from '@/api/myApi';
-
-export default defineComponent({
-    data(){
-        return {
-            loading:false,
-            finished:false,
-            jinNangList:[],
-            pageIndex:0,
-            pageSize:20
-        }
-    },
-    created(){
-        
-        //this.getAlljinNangList();
-        this.pageIndex=0;
-        console.log( moment(new Date(1728873270917)).format("YYYY-MM-DD"));
-    },
-    methods:{
-        loadData(){
-            this.getAlljinNangList();
-            this.pageIndex++;
-        },
-        getAlljinNangList(){
-            apiService.getJinNang("",this.pageSize,this.pageIndex)
-            .then(res=>{
-                console.log(res.data.detail.list);
-                this.jinNangList=[...this.jinNangList,...res.data.detail.list];
-                //最后一页，停止下拉加载数据
-                if(res.data.detail.list.length<this.pageSize){
-                    this.finished=true;
-                }
-            })
-            .catch(err=>{
-                console.log(err);
-            })
-            .finally(f=>{
-                this.loading=false;
-                //this.finished=true;
-            });
-        },
-        dateChange(timespan){
-            return moment(timespan).format("YYYY年MM月DD日");
-        },
-        setTagType(value){
-            if(value && value.indexOf('-')<0){
-                return 'primary';
-            }else{
-                return 'success';
-            };
-        },
-        GetStockList(jn){
-            this.$router.push({path:"/openJinNang",query:{JinNangId:jn.jinNangId,JinNangTitle:jn.title}});
-        }
-    }
-});
-</script>
 <template>
     <div>
         <van-list
             v-model:loading="loading"
             :finished="finished"
             finished-text="没有更多了"
-            @load="loadData"
+            @load="getAlljinNangList"
         >   
-            <van-row  v-for="jinNang in jinNangList" @click="GetStockList(jinNang)">
+            <van-row  v-for="jinNang in jinNangList" @click="openJinNang(jinNang)">
                 <van-col span="24" class="jinNang">
                     <van-row>
                         <van-col span="18" >
@@ -137,6 +74,58 @@ export default defineComponent({
         </van-list>
     </div>
 </template>
+<script setup lang="ts">
+    import { ref,reactive } from 'vue';
+    import { Row,Col,Button,List,showToast} from 'vant';
+    import moment from 'moment';
+    import apiService from '@/api/myApi';
+    import { useRouter } from 'vue-router';
+    import $router from "@/router/index"
+
+    let loading=ref(false);
+    let finished=ref(false);
+    let jinNangList:any[]=reactive([]);
+    let pageIndex=ref(0);
+    let pageSize=ref(20);
+    const getAlljinNangList=()=>{
+        apiService.getJinNang("",pageSize.value,pageIndex.value)
+        .then(res=>{
+            //console.log(res.data.detail.list);
+            
+            jinNangList.push(...res.data.detail.list);//.value=[...jinNangList.value,...res.data.detail.list];
+            pageSize.value++;
+            //最后一页，停止下拉加载数据
+            if(res.data.detail.list.length<pageSize.value){
+                finished.value=true;
+            }
+        })
+        .catch(err=>{
+            console.log(err);
+        })
+        .finally(()=>{
+            loading.value=false;
+            //this.finished=true;
+        });
+    }
+    const dateChange=(timespan:number)=>{
+        return moment(timespan).format("YYYY年MM月DD日");
+    }
+    const setTagType=(value:any)=>{
+        if(value && value.indexOf('-')<0){
+            return 'primary';
+        }else{
+            return 'success';
+        };
+    }
+    const openJinNang=(jn:any)=>{
+        const router=useRouter();
+        //router.push({path:"/open",query:{JinNangId:jn.jinNangId,JinNangTitle:jn.title}});
+        $router.push({path:"/open",query:{JinNangId:jn.jinNangId,JinNangTitle:jn.title}});
+    }
+
+    //加载
+    getAlljinNangList();
+</script>
 <style scoped >
     .jinNang{
         margin-bottom: 8px;

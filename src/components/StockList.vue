@@ -1,70 +1,6 @@
-<script>
-import { defineComponent } from 'vue';
-import { Row,Col,Cell,Tag } from 'vant';
-import axios from 'axios';
-import common from '@/utils/common';
-import service from '@/api/myApi';
-import moment from 'moment';
 
-export default defineComponent({
-    data(){
-        return{
-            
-            //marketValue:0,
-            stockList:[],
-            jinNang:{},
-            //货币格式化
-            currencyFormat:common.currencyFormat
-        }
-    },
-    created(){
-        const jid=this.$route.query.JinNangId;
-        this.jinNangTitle=this.$route.query.JinNangTitle;
-        if(jid){
-            this.getStockList(jid);
-            this.getJinNangInfo();
-        }
-    },
-    methods:{
-        getStockList(id){
-            service.getStockList(id)
-            .then(res=>{
-                console.log(res);
-                this.stockList=res.data.detail;
-                
-            })
-            .catch(err=>{
-                console.log(err);
-            });
-        
-        },
-        getJinNangInfo(){
-            service.getJinNang(this.jinNangTitle)
-            .then(res=>{
-                console.log(res.data);
-                this.jinNang=res.data.detail.list[0];
-            })
-            .catch(err=>{
-                console.log(err);
-            })
-        },
-        dateChange(timespan){
-            return moment(timespan).format("YYYY年MM月DD日");
-        },
-    },
-    computed:{
-        marketValue(){
-            let totalValue=this.stockList.reduce((total,stock)=>{
-                return total+stock.marketValue;
-            },0);
-            return common.currencyFormat(totalValue/10000);
-            
-        }
-    }
-});
-</script>
 <template>
-    <div>
+    <div id="main">
         <van-row class="header">
             <van-col span="24">
                 <van-row>
@@ -125,11 +61,11 @@ export default defineComponent({
             :style="{color:stock.totalGailLoss>0?'red':'dodgerblue'}">
             <van-col span="6">
                 <div>{{ stock.securitiesName }}</div>
-                <div>{{ currencyFormat(stock.marketValue/10000) }}</div>
+                <div>{{ common.currencyFormat(stock.marketValue/10000,2) }}</div>
             </van-col>
             <van-col span="6">
                 <div>{{ stock.gainLossScale }}</div>
-                <div>{{ currencyFormat(stock.totalGailLoss/10000) }}</div>
+                <div>{{ common.currencyFormat(stock.totalGailLoss/10000,2) }}</div>
             </van-col>
             <van-col span="6">
                 <div>{{ stock.secuAmount }}</div>
@@ -142,6 +78,65 @@ export default defineComponent({
         </van-row>
     </div>
 </template>
+<script setup lang="ts">
+import { reactive,ref,computed } from 'vue';
+import { Row,Col,Cell,Tag } from 'vant';
+import common from '@/utils/common';
+import service from '@/api/myApi';
+import moment from 'moment';
+import { useRoute } from 'vue-router';
+import $router from "@/router/index"
+const route=useRoute();
+
+//data
+let stockList:any[]=reactive([]);
+let jinNang:any=ref({});
+
+
+//method
+const getStockList=(id:number)=>{
+    service.getStockList(id)
+    .then(res=>{
+        stockList.push(...res.data.detail);
+        console.log("stocklist",stockList);
+        
+    })
+    .catch(err=>{
+        console.log(err);
+    });
+};
+
+const getJinNangInfo=()=>{
+    const jinNangTitle=route.query.JinNangTitle as string;
+    service.getJinNang(jinNangTitle)
+    .then(res=>{
+        console.log(res.data);
+        jinNang.value=res.data.detail.list[0];
+    })
+    .catch(err=>{
+        console.log(err);
+    })
+}
+const dateChange=(timespan:number)=>{
+    return moment(timespan).format("YYYY年MM月DD日");
+}
+const marketValue=computed(()=>{
+    let totalValue=stockList.reduce((total,stock)=>{
+        
+        return total+stock.marketValue;
+    },0);
+    return common.currencyFormat(totalValue/10000,2);
+});
+
+//load
+const jnId=2011624330;//$router..query.JinNangId;
+console.log("aa");
+if(jnId){
+    getStockList(Number(jnId));
+    getJinNangInfo();
+}
+
+</script>
 <style>
     .header{
         font-size: 14px;

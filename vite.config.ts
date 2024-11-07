@@ -15,6 +15,7 @@ const getViteEnv = (mode:any, target:any) => {
 // https://vitejs.dev/config/
 export default ({ mode }: ConfigEnv) =>
   defineConfig({
+    
     plugins: [
       vue(),
       Components({
@@ -49,6 +50,7 @@ export default ({ mode }: ConfigEnv) =>
         },
       ],
     },
+    
     server: {
       proxy: {
         "/hpapi": {

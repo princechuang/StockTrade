@@ -9,6 +9,10 @@ export function getWxSignature(url: string) {
   return httpUtil.get<any>(`/My/GetWxSignature?url=${url}`);
 }
 
+export function getQYWxUserInfo(code:string){
+  return httpUtil.get<any>(`/user/LoginQYWeChat?code=${code}`);
+}
+
 //获取锦囊列表，传入名称时，仅获取该锦囊信息
 const getJinNang=async(name:string,pageSize=99,pageIndex=0)=>{
     const api="/hpapi/MyFollow/GetListPage";
@@ -18,7 +22,7 @@ const getJinNang=async(name:string,pageSize=99,pageIndex=0)=>{
 }
 
 //获取锦囊内的股票信息
-const getStockList=async(jinNangId:string)=>{
+const getStockList=async(jinNangId:number)=>{
     return await axios.post("/hpapi/MyFollow/GetHoldList",{
       "PageSize":999,
       "JinNangId":jinNangId

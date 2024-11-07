@@ -1,6 +1,7 @@
 import {
   createRouter,
   createWebHistory,
+  createWebHashHistory,
   RouteLocationNormalized,
   RouteRecordRaw,
 } from "vue-router";
@@ -8,7 +9,6 @@ import { showToast } from "vant";
 import { getWxUserInfo } from "@/api/myApi";
 import { isPro, portalHost, appId, agentId } from "@/utils/configs";
 // import { jinNangList } from "@/views/allJinNang.vue";
-import { title } from "process";
 
 const App = () => import("@/App.vue");
 
@@ -21,20 +21,20 @@ const routes: Array<RouteRecordRaw> = [
     path: "/index",
     name: "index",
     meta: { title: "首页" },
-    component: () => require("@/views/index.vue"),
+    component: () => import("@/views/index.vue"),
   },
   {
-    path: "/jinNangList",
+    path: "/list",
     name: "JinNangList",
     meta: { title: "锦囊列表" },
-    component: () => require("@/views/allJinNang.vue"),
+    component: () => import("@/views/jinnang-list.vue"),
     // component: () =>jinNangList,
   },
   {
-    path:'/openJinNang',
+    path:'/open',
     name:"OpenJinNang",
     meta:{title:"锦囊详情"},
-    component:()=>require("@/views/stock_list.vue")
+    component:()=>import("@/views/jinnang-open.vue")
   }
 ];
 const router = createRouter({
@@ -47,7 +47,7 @@ const setTitle = function (to: RouteLocationNormalized, title: string) {
 };
 
 router.beforeEach((to, from, next) => {
-  
+  const dev=false;
   if (isPro) {
     const hostName = portalHost;
     const fullPath = to.fullPath;
