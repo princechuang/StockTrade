@@ -1,6 +1,7 @@
 <template>
     <van-nav-bar
         :title="stockName+stockCode"
+        left-text="返回"
         left-arrow
         @click-left="goBack"
     />
@@ -149,5 +150,9 @@ if(poolId && stockCode){
     .trade-list-item-title{
         opacity: .5;
         margin-right: 8px;
+    }
+
+    ::v-deep .van-nav-bar__left{
+        padding: 0px !important
     }
 </style>
