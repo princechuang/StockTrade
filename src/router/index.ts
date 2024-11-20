@@ -80,10 +80,11 @@ router.beforeEach((to, from, next) => {
      sessionStorage.setItem("token", token as string);
       //通过code获取登录用户的UserId
       
-      getUserInfoByToken(token as string).then((data:any) => {
+      getUserInfoByToken(token as string).then((res:any) => {
+        console.log(res);
         //缓存用户信息
-        sessionStorage.setItem("userId",data.userId);
-        sessionStorage.setItem("userInfo",JSON.stringify(data));
+        sessionStorage.setItem("userId",res.data.detail.userId);
+        sessionStorage.setItem("userInfo",JSON.stringify(res.data.detail));
 
         next();
       });

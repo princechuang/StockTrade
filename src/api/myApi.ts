@@ -7,7 +7,7 @@ export function getQYWxUserInfo(code:string){
   return httpUtil.get<any>(`/user/LoginQYWeChat?code=${code}`);
 }
 export function  getUserInfoByToken (token:string){
-  return httpUtil.get(`/user/GetUser?token=${token}`);
+  return axios.get(`${apiHost}/user/GetUser?token=${token}`);
 }
 //获取锦囊列表，传入名称时，仅获取该锦囊信息
 const getStockPool=async(name:string,pageSize=99,pageIndex=0)=>{
