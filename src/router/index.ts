@@ -82,10 +82,15 @@ router.beforeEach((to, from, next) => {
       getUserInfoByToken(token as string)
       .then((res:any) => {
         //缓存用户信息
-        sessionStorage.setItem("userId",res.data.detail.userId);
+        sessionStorage.setItem("userId",res.data.detail.userId,);
         sessionStorage.setItem("userInfo",JSON.stringify(res.data.detail));
+        
+        setTimeout(() => {
+          const userIdInStorage=sessionStorage.getItem("userId");
+          next();
+        }, 100);
 
-        next();
+        
       }).catch(err=>{
         showFailToast("获取用户信息失败");
       });

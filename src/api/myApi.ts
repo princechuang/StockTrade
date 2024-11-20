@@ -30,7 +30,7 @@ const getStockList=async(jinNangId:number)=>{
 
 //我关注的锦囊,返回锦囊名称列表
 const getMyFollowedList=async()=>{
-  const result= await axios.get(`${apiHost}/MyFollow/GetMyFollows?userId=${userId}`);
+  const result= await axios.get(`${apiHost}/MyFollow/GetMyFollows?userId=${getUserId()}`);
   if(result.status==200){
     const followList=[...result.data.detail];
     return followList;
@@ -59,7 +59,7 @@ const getFollowedStockByPool=(followedList,poolName)=>{
 
 //设置关注
 const setPoolFollow=async(stockPool,stockId,isFollow)=>{
-  return await axios.get(`${apiHost}/MyFollow/Follw?userId=${userId}&stockPool=${stockPool}&stockCode=${stockId}&isFollow=${isFollow}`);
+  return await axios.get(`${apiHost}/MyFollow/Follw?userId=${getUserId()}&stockPool=${stockPool}&stockCode=${stockId}&isFollow=${isFollow}`);
 }
 
 //获取股票池交易记录
@@ -74,7 +74,9 @@ const getTradeList=async(poolId,stockCode,startDate,endDate)=>{
 }
 
 //企业微信用户UserId
-const userId=sessionStorage.getItem("userId");
+const getUserId=()=>{
+  return sessionStorage.getItem("userId");
+}
 
 export default{
   getStockPool,
@@ -84,5 +86,5 @@ export default{
   getFollowedStockByPool,
   setPoolFollow,
   getTradeList,
-  userId
+  getUserId
 }

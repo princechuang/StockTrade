@@ -98,21 +98,15 @@
     const getAllStockPoolList=(name)=>{
         service.getStockPool(name,pageSize.value,pageIndex.value)
         .then(res=>{
-            //console.log(res.data.detail.list);
-            
             stockPoolList.push(...res.data.detail.list);//.value=[...stockPoolList.value,...res.data.detail.list];
-            pageIndex.value++;
-            //最后一页，停止下拉加载数据
-            //获取指定锦囊时，为关注列表，停止下拉加载数据
-            if((res.data.detail.list.length<pageSize.value) && name=="" || name!=""){
-                finished.value=true;
-            }
+            
         })
         .catch(err=>{
             showToast("获取股票池数据失败");
         })
         .finally(()=>{
             loading.value=false;
+            finished.value=true;
         });
     }
     //日期显示格式
@@ -156,8 +150,6 @@
         .catch(err=>{
             showToast("获取数据失败");
         }).finally(()=>{
-            loading.value=false;
-            finished.value=true;
         });
     }
 
