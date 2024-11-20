@@ -1,4 +1,5 @@
-
+import moment from 'moment';
+//货币格式化
 const currencyFormat=(amount:number,fixedLength:number)=>{
     if(!fixedLength){
         fixedLength=2;
@@ -14,6 +15,12 @@ const currencyFormat=(amount:number,fixedLength:number)=>{
   return num;
 }
 
+//日期格式
+const dateChange=(timespan:number,formatString)=>{
+  return moment(timespan).format(formatString);
+}
+
 export default {
-    currencyFormat
+    currencyFormat,
+    dateChange
 };

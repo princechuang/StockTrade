@@ -8,4 +8,4 @@ export const aliyunOssRegion = import.meta.env.VITE_APP_ALIYUN_OSSREGION;
 export const aliyunOssEndpoint = import.meta.env.VITE_APP_ALIYUN_OSSENDPOINT;
 export const aliyunOssBucket = import.meta.env.VITE_APP_ALIYUN_OSSBUCKET;
 export const isPro = import.meta.env.PROD || import.meta.env.VITE_APP_ENV_NODE === 'pro';
-export const apiHost = "/api";
+export const apiHost = "/hpapi";

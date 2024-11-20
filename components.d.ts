@@ -7,14 +7,25 @@ export {}
 /* prettier-ignore */
 declare module 'vue' {
   export interface GlobalComponents {
-    JinNang: typeof import('./src/components/JinNang.vue')['default']
+    MenuBar: typeof import('./src/components/MenuBar.vue')['default']
+    MyFollow: typeof import('./src/components/MyFollow.vue')['default']
+    PoolDetail: typeof import('./src/components/PoolDetail.vue')['default']
     RouterLink: typeof import('vue-router')['RouterLink']
     RouterView: typeof import('vue-router')['RouterView']
     StockList: typeof import('./src/components/StockList.vue')['default']
+    StockPool: typeof import('./src/components/StockPool.vue')['default']
+    Trade: typeof import('./src/components/Trade.vue')['default']
+    VanBackTop: typeof import('vant/es')['BackTop']
+    VanButton: typeof import('vant/es')['Button']
+    VanCell: typeof import('vant/es')['Cell']
     VanCol: typeof import('vant/es')['Col']
+    VanDivider: typeof import('vant/es')['Divider']
     VanIcon: typeof import('vant/es')['Icon']
     VanList: typeof import('vant/es')['List']
+    VanNavBar: typeof import('vant/es')['NavBar']
     VanRow: typeof import('vant/es')['Row']
+    VanTabbar: typeof import('vant/es')['Tabbar']
+    VanTabbarItem: typeof import('vant/es')['TabbarItem']
     VanTag: typeof import('vant/es')['Tag']
   }
 }

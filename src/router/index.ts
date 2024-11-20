@@ -6,9 +6,10 @@ import {
   RouteRecordRaw,
 } from "vue-router";
 import { showToast } from "vant";
-import { getWxUserInfo } from "@/api/myApi";
-import { isPro, portalHost, appId, agentId } from "@/utils/configs";
-// import { jinNangList } from "@/views/allJinNang.vue";
+import { getUserInfoByToken } from "@/api/myApi";
+import { isPro, portalHost, appId, agentId,apiHost } from "@/utils/configs";
+import 'vant/es/toast/style';
+import { json } from "stream/consumers";
 
 const App = () => import("@/App.vue");
 
@@ -19,22 +20,40 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: "/index",
-    name: "index",
+    name: "Index",
     meta: { title: "首页" },
     component: () => import("@/views/index.vue"),
   },
   {
-    path: "/list",
-    name: "JinNangList",
-    meta: { title: "锦囊列表" },
-    component: () => import("@/views/jinnang-list.vue"),
+    path: "/pool-list",
+    name: "poolList",
+    meta: { title: "所有锦囊" },
+    component: () => import("@/views/stock-pool-list.vue"),
     // component: () =>jinNangList,
   },
   {
     path:'/open',
-    name:"OpenJinNang",
+    name:"openJinNang",
     meta:{title:"锦囊详情"},
-    component:()=>import("@/views/jinnang-open.vue")
+    component:()=>import("@/views/stock-pool-detail.vue")
+  },
+  {
+    path:'/my-follow',
+    name:"myFollow",
+    meta:{title:"我的关注"},
+    component:()=>import("@/views/my-follow-list.vue")
+  },
+  {
+    path:'/login',
+    name:"login",
+    meta:{title:"登录"},
+    component:()=>import("@/views/login.vue")
+  },
+  {
+    path:'/trade',
+    name:"trde",
+    meta:{title:"交易记录"},
+    component:()=>import("@/views/stock-trade.vue")
   }
 ];
 const router = createRouter({
@@ -42,38 +61,36 @@ const router = createRouter({
   routes,
 });
 
-const setTitle = function (to: RouteLocationNormalized, title: string) {
+const setTitle = function (to: RouteLocationNormalized) {
   window.document.title = to.meta.title as string;
 };
 
 router.beforeEach((to, from, next) => {
-  const dev=false;
+  setTitle(to);
   if (isPro) {
     const hostName = portalHost;
     const fullPath = to.fullPath;
     const userId = sessionStorage.getItem("userId");
-    if (userId && userId !== "") {
+    if (userId && userId !== "" || to.path=="/login") {
       next();
       return;
     }
-    if (to.query.code && to.query.code !== "") {
-      const code = to.query.code.toString();
+    if (to.query.token && to.query.token !== "") {
+     const token=to.query.token;
+     sessionStorage.setItem("token", token as string);
       //通过code获取登录用户的UserId
-      getWxUserInfo(code).then((res) => {
-        if (res.ID && res.UserToken) {
-          sessionStorage.setItem("userId", res.ID);
-          sessionStorage.setItem("token", res.UserToken);
-          sessionStorage.setItem("userInfo", JSON.stringify(res));
-          next();
-        } else {
-          showToast("微信授权登录失败！");
-        }
+      
+      getUserInfoByToken(token as string).then((data:any) => {
+        //缓存用户信息
+        sessionStorage.setItem("userId",data.userId);
+        sessionStorage.setItem("userInfo",JSON.stringify(data));
+
+        next();
       });
     } else {
-      const redirectUrl = `https://open.weixin.qq.com/connect/oauth2/authorize?appid=${appId}&redirect_uri=${decodeURI(
-        hostName + fullPath
-      )}&response_type=code&scope=snsapi_base&state=&agentid=${agentId}#wechat_redirect`;
-      window.location.href = redirectUrl;
+      //跳转到未授权页面
+      next({path:"/login"});
+      return;
     }
   } else {
     next();

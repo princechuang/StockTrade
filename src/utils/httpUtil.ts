@@ -18,6 +18,7 @@ interface Result {
 
 // 请求响应参数，包含data
 interface ResultData<T = any> extends Result {
+  detail?:T,
   result?: T;
 }
 
@@ -67,18 +68,19 @@ class RequestHttp {
     this.service.interceptors.response.use(
       (response: AxiosResponse) => {
         const data = response.data as ResultData;
-        if (data.code === RequestEnums.OVERDUE) {
+        console.log("axios response",data);
+        if (data.result.code === RequestEnums.OVERDUE) {
           // 登录信息失效，应跳转到登录页面，并清空本地的token
           sessionStorage.removeItem("token");
           sessionStorage.removeItem("userId");
           showToast(data.message);
           return Promise.reject(data);
         }
-        if (data.code && data.code !== RequestEnums.SUCCESS) {
+        if (data.result.code && data.result.code !== RequestEnums.SUCCESS) {
           showToast(data.message);
           return Promise.reject(data);
         }
-        return data.result;
+        return data.detail;
       },
       (error: AxiosError) => {
         const { response } = error;
