@@ -9,7 +9,6 @@ import { showFailToast, showToast } from "vant";
 import { getUserInfoByToken } from "@/api/myApi";
 import { isPro, portalHost, appId, agentId,apiHost } from "@/utils/configs";
 import 'vant/es/toast/style';
-import { json } from "stream/consumers";
 
 const App = () => import("@/App.vue");
 
@@ -82,7 +81,6 @@ router.beforeEach((to, from, next) => {
       
       getUserInfoByToken(token as string)
       .then((res:any) => {
-        console.log(res);
         //缓存用户信息
         sessionStorage.setItem("userId",res.data.detail.userId);
         sessionStorage.setItem("userInfo",JSON.stringify(res.data.detail));
