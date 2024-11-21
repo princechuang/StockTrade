@@ -1,3 +1,9 @@
+<script>
+import MyFollow from '@/components/MyFollow.vue';
+</script>
 <template>
-    您未登录!
+    <div id="main">
+        <my-follow></my-follow>
+    </div>
+    
 </template>

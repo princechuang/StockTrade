@@ -152,7 +152,7 @@ if(poolId && stockCode){
         margin-right: 8px;
     }
 
-    ::v-deep .van-nav-bar__left{
+    :deep() .van-nav-bar__left{
         padding: 0px !important
     }
 </style>

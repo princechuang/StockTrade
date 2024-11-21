@@ -43,7 +43,7 @@ const routes: Array<RouteRecordRaw> = [
     component:()=>import("@/views/my-follow-list.vue")
   },
   {
-    path:'/login',
+    path:'/my-info',
     name:"login",
     meta:{title:"登录"},
     component:()=>import("@/views/login.vue")
